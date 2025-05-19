@@ -1,4 +1,4 @@
-# Animal-Shelter-Administration
+# Animal-Shelter-Management
 
 This project is a Java-based animal shelter management system that allows you to manage animals in a shelter. Currently, the project is a work in progress, and more features will be added in the future.
 
@@ -24,7 +24,7 @@ This project is a Java-based animal shelter management system that allows you to
 
 ## 💾 Data Storage
 
-Animal data is loaded from and saved to a file (`tiere.txt`) during the program's runtime. All data is lost once the program is closed unless explicitly saved.
+Animal data is loaded from and saved to a file (`animals.txt`) during the program's runtime. All data is lost once the program is closed unless explicitly saved.
 
 ## 🚀 Getting Started
 
