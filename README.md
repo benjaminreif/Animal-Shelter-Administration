@@ -34,14 +34,36 @@ Animal data is loaded from and saved to a file (`tiere.txt`) during the program'
 2. Open the project in your preferred Java IDE.
 3. Run the `Main.java` file.
 
+Alternatively, compile and run from terminal:
+
+```bash
+javac Main.java
+java Main
+```
+
 ### Usage
 
 1. Upon running the program, you will be presented with a text-based menu in the console where you can choose different actions, such as adding an animal, viewing the list, or calculating the average age.
 2. Follow the prompts in the console to interact with the application.
 
-## 🤖 AI Assistance
 
-This project was created with the help of online resources and guidance from ChatGPT, as part of my learning journey in Java. The assistance included help with calling methods, saving and overwriting data.
+
+### 📂 File Structure
+```
+/AnimalShelterManagement
+├── src/
+│ ├── Main.java        # Main application source code
+│ ├── Animal.java      # Base animal class
+│ ├── Dog.java         # Dog subclass
+│ └── Cat.java         # Cat subclass
+├── animals.txt        # Generated file to store animal data
+├── README.md          # Project documentation
+└── LICENSE            # License file (MIT by default)
+```
+
+## 🙋‍♂️ Credits
+
+This project was created with the help of online resources and guidance from ChatGPT, as part of my learning journey in Java.
 
 ## 📚 License
 
