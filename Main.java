@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -44,15 +45,21 @@ public class Main {
         while (active) {
             // Display menu
             System.out.println("\n\n\n--- Animal Shelter Menu ---");
-            System.out.println("[1] Add animal");
-            System.out.println("[2] Show all animals");
-            System.out.println("[3] Search animal");
-            System.out.println("[4] Show animals by species");
-            System.out.println("[5] Calculate average age");
-            System.out.println("[6] Delete animal by name");
-            System.out.println("[7] Edit animal data");
-            System.out.println("[8] Save animals");
-            System.out.println("[0] Exit program");
+            System.out.println("[1]  Add animal");
+            System.out.println("[2]  Show all animals");
+            System.out.println("[3]  Search animal");
+            System.out.println("[4]  Show animals by species");
+            System.out.println("[5]  Calculate average age");
+            System.out.println("[6]  Delete animal by name");
+            System.out.println("[7]  Edit animal data");
+            System.out.println("[8]  Save animals");
+            System.out.println("[9]  Sort animals");
+            System.out.println("[10] Show animals by specific age");
+            System.out.println("[11] Count animals by species");
+            System.out.println("[12] Show oldest animal");
+            System.out.println("[13] Reload animals from file");
+            System.out.println("[14] Show random animal");
+            System.out.println("[0]  Exit program");
             System.out.print("\nChoice: ");
             int choice = sc.nextInt();
 
@@ -230,6 +237,7 @@ public class Main {
                     break;
 
                 case 9:
+                    // Sort animals
                     System.out.println("What would you like to sort by?");
                     System.out.println("[1] By Name");
                     System.out.println("[2] By Species");
@@ -265,6 +273,167 @@ public class Main {
 
                     break;
 
+                case 10:
+                    // Show animals by specific age
+                    System.out.print("🔎 Enter the age you'd like to search for: ");
+                    int searchAge = sc.nextInt();
+
+                    boolean foundAnimal = false;
+
+                    System.out.println("\n--- Animals that are " + searchAge + " years old ---");
+                    for (Animal animal : animals) {
+                        if (animal.age == searchAge) {
+                            animal.introduce();
+
+                            if (animal instanceof Dog) {
+                                ((Dog) animal).bark();
+                            } else if (animal instanceof Cat) {
+                                ((Cat) animal).meow();
+                            }
+
+                            System.out.println();
+                            foundAnimal = true;
+                        }
+                    }
+
+                    if (!foundAnimal) {
+                        System.out.println("❌ No animals found with age " + searchAge + ".");
+                    }
+
+                    break;
+
+                case 11:
+                    // Count animals by species
+                    int dogCount = 0;
+                    int catCount = 0;
+                    int otherCount = 0;
+
+                    for (Animal animal : animals) {
+                        if (animal instanceof Dog) {
+                            dogCount ++;
+                        } else if (animal instanceof Cat) {
+                            catCount ++;
+                        } else {
+                            otherCount ++;
+                        }
+                    }
+
+                    System.out.println("\n--- Animal Type Count ---");
+                    System.out.println("Dogs:   " + dogCount);
+                    System.out.println("Cats:   " + catCount);
+                    System.out.println("Others: " + otherCount);
+
+                    break;
+
+                case 12:
+                    // Show oldest animal
+                    if (animals.isEmpty()) {
+                        System.out.println("❌ No animals in the shelter.");
+                        break;
+                    }
+
+                    Animal oldestAnimal = animals.get(0); // start with the first animal
+
+                    for (Animal animal : animals) {
+                        if (animal.age > oldestAnimal.age) {
+                            oldestAnimal = animal;
+                        }
+                    }
+
+                    System.out.println("\n--- Oldest Animal ---");
+                    oldestAnimal.introduce();
+
+                    if (oldestAnimal instanceof Dog) {
+                        ((Dog) oldestAnimal).bark();
+                    } else if (oldestAnimal instanceof Cat) {
+                        ((Cat) oldestAnimal).meow();
+                    }
+
+                    System.out.println("This is the oldest animal in the shelter: " +oldestAnimal);
+
+                    break;
+
+                case 13:
+                    // Reload animals from file
+                    animals.clear(); // remove all current animals
+
+                    try {
+                        File file = new File("animals.txt");
+
+                        if (file.exists()) {
+                            Scanner reader = new Scanner(file);
+
+                            while (reader.hasNextLine()) {
+                                String line = reader.nextLine();
+                                String[] parts = line.split(";");
+                                String nameFromFile = parts[0];
+                                int ageFromFile = Integer.parseInt(parts[1]);
+                                String speciesFromFile = parts[2];
+
+                                if (speciesFromFile.equalsIgnoreCase("Dog")) {
+                                    animals.add(new Dog(nameFromFile, ageFromFile, speciesFromFile));
+                                } else if (speciesFromFile.equalsIgnoreCase("Cat")) {
+                                    animals.add(new Cat(nameFromFile, ageFromFile, speciesFromFile));
+                                } else {
+                                    animals.add(new Animal(nameFromFile, ageFromFile, speciesFromFile));
+                                }
+                            }
+
+                            reader.close();
+                            System.out.println("✅ Animals successfully reloaded from file.");
+                        } else {
+                            System.out.println("📁 No file found to reload.");
+                        }
+                    } catch (IOException e) {
+                        System.out.println("❌ Error while reloading: " + e.getMessage());
+                    }
+
+                    break;
+
+                case 14:
+                    //Show random animal
+                    if (animals.isEmpty()) {
+                        System.out.println("❌ No animals in the shelter.");
+                        break;
+                    }
+
+                    int randomIndex = (int) (Math.random() * animals.size());
+
+                    Animal randomAnimal = animals.get(randomIndex); // get the random animal
+
+                    System.out.println("\n🎲 Random animal selected:");
+                    randomAnimal.introduce();
+
+                    if (randomAnimal instanceof Dog) {
+                        ((Dog) randomAnimal).bark();
+                    } else if (randomAnimal instanceof Cat) {
+                        ((Cat) randomAnimal).meow();
+                    }
+
+                    System.out.println();
+                    break;
+
+                case 15:
+                    // Export all animals to a formatted file
+                    try {
+                        PrintWriter writer = new PrintWriter("overview.txt");
+
+                        writer.println("--- Animal Overview ---\n");
+
+                        for (Animal animal : animals) {
+                            writer.println("Name:    " + animal.name);
+                            writer.println("Age:     " + animal.age);
+                            writer.println("Species: " + animal.species);
+                            writer.println("------------------------\n");
+                        }
+
+                        writer.close();
+                        System.out.println("✅ Animal overview exported to 'overview.txt'");
+                    } catch (IOException e) {
+                        System.out.println("❌ Error while exporting: " + e.getMessage());
+                    }
+                    break;
+
                 case 0:
                     // Exit program
                     System.out.println("Program exiting.");
@@ -272,6 +441,7 @@ public class Main {
                     break;
 
                 default:
+                    // Invalid input handler
                     System.out.println("❌ Invalid choice.");
                     break;
             }
